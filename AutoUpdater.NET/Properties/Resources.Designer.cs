@@ -19,10 +19,10 @@ namespace AutoUpdaterDotNET.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace AutoUpdaterDotNET.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AutoUpdaterDotNET.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace AutoUpdaterDotNET.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,18 @@ namespace AutoUpdaterDotNET.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string btnUpdate {
+            get {
+                return ResourceManager.GetString("btnUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_go {
+        public static System.Drawing.Bitmap clock_go {
             get {
                 object obj = ResourceManager.GetObject("clock_go", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +82,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_go_32 {
+        public static System.Drawing.Bitmap clock_go_32 {
             get {
                 object obj = ResourceManager.GetObject("clock_go_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +92,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_play {
+        public static System.Drawing.Bitmap clock_play {
             get {
                 object obj = ResourceManager.GetObject("clock_play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +102,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap download {
+        public static System.Drawing.Bitmap download {
             get {
                 object obj = ResourceManager.GetObject("download", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +112,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap download_32 {
+        public static System.Drawing.Bitmap download_32 {
             get {
                 object obj = ResourceManager.GetObject("download_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +122,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Downloading at {0}/s.
         /// </summary>
-        internal static string DownloadSpeedMessage {
+        public static string DownloadSpeedMessage {
             get {
                 return ResourceManager.GetString("DownloadSpeedMessage", resourceCulture);
             }
@@ -122,7 +131,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Checksum differs.
         /// </summary>
-        internal static string FileIntegrityCheckFailedCaption {
+        public static string FileIntegrityCheckFailedCaption {
             get {
                 return ResourceManager.GetString("FileIntegrityCheckFailedCaption", resourceCulture);
             }
@@ -131,7 +140,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to File integrity check failed and reported some errors..
         /// </summary>
-        internal static string FileIntegrityCheckFailedMessage {
+        public static string FileIntegrityCheckFailedMessage {
             get {
                 return ResourceManager.GetString("FileIntegrityCheckFailedMessage", resourceCulture);
             }
@@ -140,7 +149,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap hand_point {
+        public static System.Drawing.Bitmap hand_point {
             get {
                 object obj = ResourceManager.GetObject("hand_point", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -150,7 +159,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Unsupported Hash Algorithm.
         /// </summary>
-        internal static string HashAlgorithmNotSupportedCaption {
+        public static string HashAlgorithmNotSupportedCaption {
             get {
                 return ResourceManager.GetString("HashAlgorithmNotSupportedCaption", resourceCulture);
             }
@@ -159,16 +168,25 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Hash algorithm provided in the XML file is not supported..
         /// </summary>
-        internal static string HashAlgorithmNotSupportedMessage {
+        public static string HashAlgorithmNotSupportedMessage {
             get {
                 return ResourceManager.GetString("HashAlgorithmNotSupportedMessage", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to determine the filename of the update file!.
+        /// </summary>
+        public static string UnableToDetermineFilenameMessage {
+            get {
+                return ResourceManager.GetString("UnableToDetermineFilenameMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap update {
+        public static System.Drawing.Bitmap update {
             get {
                 object obj = ResourceManager.GetObject("update", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -176,18 +194,9 @@ namespace AutoUpdaterDotNET.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to determine the filename of the update file!.
-        /// </summary>
-        internal static string UnableToDetermineFilenameMessage {
-            get {
-                return ResourceManager.GetString("UnableToDetermineFilenameMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Update Check Failed.
         /// </summary>
-        internal static string UpdateCheckFailedCaption {
+        public static string UpdateCheckFailedCaption {
             get {
                 return ResourceManager.GetString("UpdateCheckFailedCaption", resourceCulture);
             }
@@ -196,7 +205,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to There is a problem reaching update server. Please check your internet connection and try again later..
         /// </summary>
-        internal static string UpdateCheckFailedMessage {
+        public static string UpdateCheckFailedMessage {
             get {
                 return ResourceManager.GetString("UpdateCheckFailedMessage", resourceCulture);
             }
@@ -205,7 +214,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Update Unavailable.
         /// </summary>
-        internal static string UpdateUnavailableCaption {
+        public static string UpdateUnavailableCaption {
             get {
                 return ResourceManager.GetString("UpdateUnavailableCaption", resourceCulture);
             }
@@ -214,7 +223,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized string similar to There is no update available. Please try again later..
         /// </summary>
-        internal static string UpdateUnavailableMessage {
+        public static string UpdateUnavailableMessage {
             get {
                 return ResourceManager.GetString("UpdateUnavailableMessage", resourceCulture);
             }
@@ -223,7 +232,7 @@ namespace AutoUpdaterDotNET.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] ZipExtractor {
+        public static byte[] ZipExtractor {
             get {
                 object obj = ResourceManager.GetObject("ZipExtractor", resourceCulture);
                 return ((byte[])(obj));

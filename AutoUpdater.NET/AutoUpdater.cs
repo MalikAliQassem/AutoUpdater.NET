@@ -224,6 +224,10 @@ public static class AutoUpdater
     ///     If this is true users can see the skip button.
     /// </summary>
     public static bool ShowSkipButton = true;
+    /// <summary>
+    ///     If this is true load changelog and save as html file locle .
+    /// </summary>
+    public static bool ChangeLogAsStringHtml = false;
 
     /// <summary>
     ///     Set this to true if you want to run update check synchronously.
@@ -304,6 +308,9 @@ public static class AutoUpdater
     {
         try
         {
+
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("ar");
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar");
             ServicePointManager.SecurityProtocol |= (SecurityProtocolType)192 |
                                                     (SecurityProtocolType)768 | (SecurityProtocolType)3072;
         }
@@ -405,32 +412,30 @@ public static class AutoUpdater
 
         PersistenceProvider ??= new RegistryPersistenceProvider(registryLocation);
 
+        BaseUri = new Uri(AppCastURL);
+
         UpdateInfoEventArgs args;
-        string xml = null;
-
-        if (AppCastURL != null)
+        using (MyWebClient client = GetWebClient(BaseUri, BasicAuthXML))
         {
-            BaseUri = new Uri(AppCastURL);
-            using MyWebClient client = GetWebClient(BaseUri, BasicAuthXML);
-            xml = client.DownloadString(BaseUri);
-        }
+            string xml = client.DownloadString(BaseUri);
 
-        if (ParseUpdateInfoEvent == null)
-        {
-            if (string.IsNullOrEmpty(xml))
+            if (ParseUpdateInfoEvent == null)
             {
-                throw new Exception("It is required to handle ParseUpdateInfoEvent when XML url is not specified.");
-            }
+                if (string.IsNullOrEmpty(xml))
+                {
+                    throw new Exception("It is required to handle ParseUpdateInfoEvent when XML url is not specified.");
+                }
 
-            var xmlSerializer = new XmlSerializer(typeof(UpdateInfoEventArgs));
-            var xmlTextReader = new XmlTextReader(new StringReader(xml)) { XmlResolver = null };
-            args = (UpdateInfoEventArgs)xmlSerializer.Deserialize(xmlTextReader);
-        }
-        else
-        {
-            var parseArgs = new ParseUpdateInfoEventArgs(xml);
-            ParseUpdateInfoEvent(parseArgs);
-            args = parseArgs.UpdateInfo;
+                var xmlSerializer = new XmlSerializer(typeof(UpdateInfoEventArgs));
+                var xmlTextReader = new XmlTextReader(new StringReader(xml)) { XmlResolver = null };
+                args = (UpdateInfoEventArgs)xmlSerializer.Deserialize(xmlTextReader);
+            }
+            else
+            {
+                var parseArgs = new ParseUpdateInfoEventArgs(xml);
+                ParseUpdateInfoEvent(parseArgs);
+                args = parseArgs.UpdateInfo;
+            }
         }
 
         if (string.IsNullOrEmpty(args?.CurrentVersion) || string.IsNullOrEmpty(args.DownloadURL))
@@ -717,6 +722,9 @@ public static class AutoUpdater
     /// </summary>
     public static void ShowUpdateForm(UpdateInfoEventArgs args)
     {
+        CultureInfo.CurrentCulture = new CultureInfo("ar");
+        // Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar");
+        Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("ar");
         using var updateForm = new UpdateForm(args);
 
         if (UpdateFormSize.HasValue)

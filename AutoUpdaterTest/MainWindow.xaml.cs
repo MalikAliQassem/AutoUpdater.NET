@@ -13,8 +13,9 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        AutoUpdater.InstalledVersion = new Version("1.1.3");
         var assembly = Assembly.GetEntryAssembly();
-        LabelVersion.Content = $"Current Version : {assembly?.GetName().Version}";
+        LabelVersion.Content = $"Current Version : {AutoUpdater.InstalledVersion}";
 
         // Uncomment following lines to change current language by changing current thread culture as shown below.
         // Thread.CurrentThread.CurrentCulture =
@@ -183,7 +184,7 @@ public partial class MainWindow : Window
         // AutoUpdater.Synchronous = true;
 
         // Uncomment following line if you want to assign installed version manually and don't want to rely on the library to determine the installed version from assembly.
-        // AutoUpdater.InstalledVersion = new Version("2.0.0.1");
+         AutoUpdater.InstalledVersion = new Version("1.1.3");
 
         // Uncomment following line if you want to clear application directory before update zip is extracted. This only works when you use zip file as an update file.
         // AutoUpdater.ClearAppDirectory = true;
@@ -199,7 +200,7 @@ public partial class MainWindow : Window
 
         // Uncomment following line to change the Icon shown on the updater dialog.
         AutoUpdater.Icon = Resource.Icon;
-
-        AutoUpdater.Start("https://rbsoft.org/updates/AutoUpdaterTest.xml");
+        AutoUpdater.ChangeLogAsStringHtml = true;
+        AutoUpdater.Start("https://github.com/MalikAliQassem/tikhah-soft/raw/main/whatsapp/AutoUpdater.xml");
     }
 }

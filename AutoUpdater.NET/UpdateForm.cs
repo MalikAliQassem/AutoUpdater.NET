@@ -1,12 +1,19 @@
-﻿using System;
+﻿using AutoUpdaterDotNET.Properties;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Resources;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
-using Microsoft.Web.WebView2.Core;
-using Microsoft.Win32;
+using System.Windows.Markup;
+using System.Xml.Serialization;
 using static System.Reflection.Assembly;
 
 namespace AutoUpdaterDotNET;
@@ -14,9 +21,14 @@ namespace AutoUpdaterDotNET;
 internal sealed partial class UpdateForm : Form
 {
     private readonly UpdateInfoEventArgs _args;
-
+    CultureInfo cultureInfo;
+    System.ComponentModel.ComponentResourceManager resources;
+    ResourceManager resourceManager;
     public UpdateForm(UpdateInfoEventArgs args)
     {
+        cultureInfo = new CultureInfo("ar");
+        // Thread.CurrentThread.CurrentUICulture = new CultureInfo("a   `r");
+        Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture("ar");
         _args = args;
         InitializeComponent();
         InitializeBrowserControl();
@@ -27,11 +39,25 @@ internal sealed partial class UpdateForm : Form
             pictureBoxIcon.Image = AutoUpdater.Icon;
             Icon = Icon.FromHandle(AutoUpdater.Icon.GetHicon());
         }
+        // CultureInfo.CurrentCulture = new CultureInfo("ar");
+        // Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar");
+        // Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = new CultureInfo("ar");// CultureInfo.CreateSpecificCulture("ar");
+
+        // resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
+        //   ComponentResourceManager rm = new ComponentResourceManager("YourNamespace.Resource", typeof(Program).Assembly);
+        resourceManager = new System.Resources.ResourceManager("AutoUpdaterDotNET.Properties.Resources", typeof(Resources).Assembly);
+        // تحميل النصوص بناءً على الثقافة الحالية
+        //  string welcomeMessage = rm.GetString("WelcomeMessage");
 
         buttonSkip.Visible = AutoUpdater.ShowSkipButton;
         buttonRemindLater.Visible = AutoUpdater.ShowRemindLaterButton;
-        var resources = new ComponentResourceManager(typeof(UpdateForm));
-        Text = string.Format(resources.GetString("$this.Text", CultureInfo.CurrentCulture)!,
+        // var resources = new ComponentResourceManager(typeof(UpdateForm));
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+        resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
+        resources.ApplyResources(this.buttonUpdate, "buttonUpdate", cultureInfo);
+     // var fff=  resources.GetResourceSet(cultureInfo,true,false);//CultureInfo.CurrentCulture
+      //  fff?.GetString("buttonUpdate.Text");
+        Text = string.Format(resources.GetString("$this.Text", cultureInfo)!,
             AutoUpdater.AppTitle, _args.CurrentVersion);
         labelUpdate.Text = string.Format(resources.GetString("labelUpdate.Text", CultureInfo.CurrentCulture)!,
             AutoUpdater.AppTitle);
@@ -43,8 +69,27 @@ internal sealed partial class UpdateForm : Form
         {
             ControlBox = false;
         }
+        SetLanguage();
+        
+    // MessageBox.Show( CultureInfo.CurrentCulture.Name+ resources.BaseName + resourceManager?.GetString("BtnUpdate")+"--"+ resources.GetString("$this.Text", cultureInfo));
     }
-
+    void SetLanguage()
+    {
+        this.buttonUpdate.Text = resourceManager?.GetString("BtnUpdate") ?? resources.GetString("buttonUpdate.Text", cultureInfo);
+        // this.buttonUpdate.Text = resourceManager?.GetString("BtnUpdate") ?? resources.GetString("buttonUpdate.Text", cultureInfo);
+        // resources.ApplyResources(this, "$this", cultureInfo);
+        //resources.ApplyResources(this.buttonSkip, "buttonSkip", cultureInfo);
+        //resources.ApplyResources(this.pictureBoxIcon, "pictureBoxIcon", cultureInfo);
+        //resources.ApplyResources(this.buttonUpdate, "buttonUpdate", cultureInfo);
+        //resources.ApplyResources(this.labelReleaseNotes, "labelReleaseNotes", cultureInfo);
+        //// resources.ApplyResources(this.labelDescription, "labelDescription", ff);
+        //resources.ApplyResources(this.buttonRemindLater, "buttonRemindLater", cultureInfo);
+        //Text = string.Format(resources.GetString("$this.Text", cultureInfo/* CultureInfo.CurrentCulture*/),
+        //   AutoUpdater.AppTitle, _args.CurrentVersion);
+        this.buttonUpdate.Anchor=AnchorStyles.Top|AnchorStyles.Right;
+        this.buttonUpdate.Visible=true;
+    }
+  
     private async void InitializeBrowserControl()
     {
         if (string.IsNullOrEmpty(_args.ChangelogURL))
@@ -77,7 +122,12 @@ internal sealed partial class UpdateForm : Form
             if (webView2RuntimeFound)
             {
                 webBrowser.Hide();
+               
+
+                
                 webView2.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
+                //await webView2.EnsureCoreWebView2Async(null);
+
                 await webView2.EnsureCoreWebView2Async(
                     await CoreWebView2Environment.CreateAsync(null, Path.GetTempPath()));
             }
@@ -86,12 +136,21 @@ internal sealed partial class UpdateForm : Form
                 UseLatestIE();
                 if (null != AutoUpdater.BasicAuthChangeLog)
                 {
+                    
                     webBrowser.Navigate(_args.ChangelogURL, "", null,
                         $"Authorization: {AutoUpdater.BasicAuthChangeLog}");
                 }
                 else
                 {
-                    webBrowser.Navigate(_args.ChangelogURL);
+                    try
+                    {
+                        var uri = getChangeLogUri();
+                        webBrowser.Navigate(uri);
+                    }
+                    catch (Exception)
+                    {
+                        webBrowser.Navigate(_args.ChangelogURL);
+                    }
                 }
             }
         }
@@ -129,8 +188,67 @@ internal sealed partial class UpdateForm : Form
             };
         }
 
-        webView2.CoreWebView2.Navigate(_args.ChangelogURL);
+        //LoadLargeHtml();
+        //webView2.CoreWebView2.NavigateToString(htmlContent);
+        //Task.Run(async () =>
+        //{
+            //LoadLargeHtml();
+            //await webView2.EnsureCoreWebView2Async(null);
+
+            //webView2.CoreWebView2.NavigateToString(htmlContent);
+        //});
+        //webView2.CoreWebView2.Navigate("file:///D:/TikhahSoft/AutoUpdateFile/tikhah-soft/whatsapp/Note.html");
+        var uri = getChangeLogUri();
+        webView2.CoreWebView2.Navigate(uri);
     }
+
+    private  void LoadLargeHtml()
+    {
+        if (!AutoUpdater.ChangeLogAsStringHtml)
+        {
+            webView2.CoreWebView2.Navigate(_args.ChangelogURL);
+            return;
+        }
+        string html=string.Empty;
+        var BaseUri = new Uri(_args.ChangelogURL);
+        using (MyWebClient client = AutoUpdater.GetWebClient(BaseUri, AutoUpdater.BasicAuthXML))
+        {
+            html = client.DownloadString(BaseUri);
+        }
+
+        //var http = new HttpClient();
+        //var html = await http.GetStringAsync(
+        //    "https://raw.githubusercontent.com/username/repo/main/file.html"
+        //);
+        //string html = await File.ReadAllTextAsync("index.html");
+
+        string tempPath = Path.Combine(Path.GetTempPath(), "pdfviewer.html");
+        tempPath=tempPath.Replace("\\", "/");
+        File.WriteAllText(tempPath, html);
+
+        webView2.CoreWebView2.Navigate($"file:///{tempPath}");
+    }
+
+    private string getChangeLogUri()
+    {
+        if (!AutoUpdater.ChangeLogAsStringHtml)
+        {
+            return _args.ChangelogURL;
+        }
+        string html = string.Empty;
+        var BaseUri = new Uri(_args.ChangelogURL);
+        using (MyWebClient client = AutoUpdater.GetWebClient(BaseUri, AutoUpdater.BasicAuthXML))
+        {
+            html = client.DownloadString(BaseUri);
+        }
+
+        string tempPath = Path.Combine(Path.GetTempPath(), "pdfviewer.html");
+        tempPath = tempPath.Replace("\\", "/");
+        File.WriteAllText(tempPath, html);
+
+       return $"file:///{tempPath}";
+    }
+
 
     private void UseLatestIE()
     {

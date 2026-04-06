@@ -15,9 +15,9 @@
         <AssemblyVersion>1.9.3.0</AssemblyVersion>
         <FileVersion>1.9.3.0</FileVersion>
         <PackageVersion>1.9.3.0</PackageVersion>
-        <SignAssembly>true</SignAssembly>
+        <SignAssembly>false</SignAssembly>
         <AssemblyOriginatorKeyFile>AutoUpdater.NET.snk</AssemblyOriginatorKeyFile>
-        <NeutralLanguage>en</NeutralLanguage>
+        <NeutralLanguage>ar</NeutralLanguage>
         <PackageId>Autoupdater.NET.Official</PackageId>
         <IncludeSymbols>true</IncludeSymbols>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -38,18 +38,25 @@
         <DebugType>full</DebugType>
     </PropertyGroup>
     <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-        <Reference Include="System"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Drawing"/>
-        <Reference Include="System.Windows.Forms"/>
-        <Reference Include="System.Xml"/>
-        <Reference Include="WindowsBase"/>
-        <Reference Include="PresentationFramework"/>
-        <Reference Include="System.Xaml"/>
-        <Reference Include="System.Runtime.Serialization"/>
+        <Reference Include="System" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
+        <Reference Include="WindowsBase" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="System.Xaml" />
+        <Reference Include="System.Runtime.Serialization" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2849.39"/>
+        <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Update="DownloadUpdateDialog.ar.resx">
@@ -114,6 +121,10 @@
         </EmbeddedResource>
         <EmbeddedResource Update="DownloadUpdateDialog.zh-TW.resx">
             <DependentUpon>DownloadUpdateDialog.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
         <EmbeddedResource Update="RemindLaterForm.ar.resx">
             <DependentUpon>RemindLaterForm.cs</DependentUpon>

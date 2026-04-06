@@ -83,7 +83,6 @@ public partial class FormMain : Form
         _backgroundWorker.DoWork += (_, eventArgs) =>
         {
             foreach (Process process in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(currentExe)))
-            {
                 try
                 {
                     if (process.MainModule is { FileName: not null } && process.MainModule.FileName.Equals(currentExe))
@@ -98,11 +97,8 @@ public partial class FormMain : Form
                 {
                     Debug.WriteLine(exception.Message);
                 }
-            }
 
             _logBuilder.AppendLine("BackgroundWorker started successfully.");
-
-            Invoke(new Action(() => { ControlBox = false; }));
 
             // Ensures that the last character on the extraction path
             // is the directory separator char.
@@ -229,17 +225,11 @@ public partial class FormMain : Form
 
                             foreach (Process lockingProcess in lockingProcesses)
                             {
-                                var dialogResult = DialogResult.None;
-
-                                Invoke(new Action(() =>
-                                {
-                                    dialogResult = MessageBox.Show(this,
-                                        string.Format(Resources.FileStillInUseMessage,
-                                            lockingProcess.ProcessName, filePath),
-                                        Resources.FileStillInUseCaption,
-                                        MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-                                }));
-
+                                DialogResult dialogResult = MessageBox.Show(this,
+                                    string.Format(Resources.FileStillInUseMessage,
+                                        lockingProcess.ProcessName, filePath),
+                                    Resources.FileStillInUseCaption,
+                                    MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
                                 if (dialogResult == DialogResult.Cancel)
                                 {
                                     throw;
